@@ -1,0 +1,49 @@
+alertmanager:
+  alertmanagerSpec:
+    containers:
+    - env:
+      - name: TZ
+        value: Europe/Madrid
+      name: alertmanager
+      volumeMounts:
+      - mountPath: /etc/localtime
+        name: tz-config
+        readOnly: true
+      - mountPath: /usr/share/zoneinfo
+        name: tz-data
+        readOnly: true
+    volumes:
+    - hostPath:
+        path: /etc/localtime
+      name: tz-config
+    - hostPath:
+        path: /usr/share/zoneinfo
+      name: tz-data
+grafana:
+  env:
+    TZ: Europe/Madrid
+  extraVolumeMounts:
+  - mountPath: /etc/localtime
+    name: tz-config
+    readOnly: true
+  - mountPath: /usr/share/zoneinfo
+    name: tz-data
+    readOnly: true
+  extraVolumes:
+  - hostPath:
+      path: /etc/localtime
+    name: tz-config
+  - hostPath:
+      path: /usr/share/zoneinfo
+    name: tz-data
+  persistence:
+    accessModes:
+    - ReadWriteOnce
+    enabled: true
+    size: 2Gi
+    storageClassName: synology-iscsi-storage
+    type: pvc
+  service:
+    annotations:
+      metallb.universe.tf/loadBalancerIPs: 10.110.19.101
+    type: LoadBalancer

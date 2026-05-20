@@ -1,0 +1,18 @@
+# ==============================================================================
+# MANIFEST: synology-storageclass.yaml
+# DESC: Clase de almacenamiento por defecto. Conecta K8s con la cabina NAS
+#       Synology mediante CSI para aprovisionamiento dinámico de LUNs iSCSI.
+# ==============================================================================
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: synology-iscsi-storage
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "true"
+provisioner: csi.san.synology.com
+parameters:
+  fsType: 'ext4'
+  dsm: '10.110.19.180'
+  location: '/volume1'
+reclaimPolicy: Delete
+allowVolumeExpansion: true

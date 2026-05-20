@@ -1,0 +1,20 @@
+# ==============================================================================
+# MANIFEST: metallb.yaml
+# DESC: Configuración del LoadBalancer Bare-Metal. Define el pool de IPs 
+#       disponibles y el protocolo de anuncio (ARP/NDP) en Capa 2.
+# ==============================================================================
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: ip-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  # Rango inicial. Expandible dinámicamente vía auto-metallb.sh
+  - 10.110.19.100-10.110.19.110
+---
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: l2-advert
+  namespace: metallb-system
